@@ -2,13 +2,11 @@ package com.mike.pagertest;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -65,13 +63,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         list1.add("http://www.tintup.com/blog/wp-content/uploads/2014/05/fame.jpg");
         list1.add("http://www.prettycrown.com/wp-content/uploads/2015/08/desktop-wallpapers.jpg");
         Picasso.Builder builder = new Picasso.Builder(this);
-        builder.downloader(new OkHttpDownloader(this))
-                .listener(new Picasso.Listener() {
-                    @Override
-                    public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
-                        int a = 0;
-                    }
-                });
         Picasso built = builder.build();
         built.setIndicatorsEnabled(true);
         built.setLoggingEnabled(true);

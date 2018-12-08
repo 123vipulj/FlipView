@@ -20,8 +20,6 @@ import android.graphics.Rect;
 import android.graphics.Shader;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.VelocityTrackerCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -57,10 +55,9 @@ public class FlipView extends FrameLayout {
     }
 
     /**
-     *
      * @author emilsjolander
-     *
-     *         Class to hold a view and its corresponding info
+     * <p>
+     * Class to hold a view and its corresponding info
      */
     static class Page {
         View v;
@@ -610,17 +607,17 @@ public class FlipView extends FrameLayout {
                     break;
                 }
 
-                final int pointerIndex = MotionEventCompat.findPointerIndex(ev,
+                final int pointerIndex = ev.findPointerIndex(
                         activePointerId);
                 if (pointerIndex == -1) {
                     mActivePointerId = INVALID_POINTER;
                     break;
                 }
 
-                final float x = MotionEventCompat.getX(ev, pointerIndex);
+                final float x = ev.getX(pointerIndex);
                 final float dx = x - mLastX;
                 final float xDiff = Math.abs(dx);
-                final float y = MotionEventCompat.getY(ev, pointerIndex);
+                final float y = ev.getY(pointerIndex);
                 final float dy = y - mLastY;
                 final float yDiff = Math.abs(dy);
 
@@ -643,15 +640,15 @@ public class FlipView extends FrameLayout {
             case MotionEvent.ACTION_DOWN:
                 mActivePointerId = ev.getAction()
                         & MotionEvent.ACTION_POINTER_INDEX_MASK;
-                mLastX = MotionEventCompat.getX(ev, mActivePointerId);
-                mLastY = MotionEventCompat.getY(ev, mActivePointerId);
+                mLastX = ev.getX(mActivePointerId);
+                mLastY = ev.getY(mActivePointerId);
                 mSpeedMultiplier = 0.5f;
                 mIsFlipping = !mScroller.isFinished() | mPeakAnim != null;
                 mIsUnableToFlip = false;
                 mLastTouchAllowed = true;
 
                 break;
-            case MotionEventCompat.ACTION_POINTER_UP:
+            case MotionEvent.ACTION_POINTER_UP:
                 onSecondaryPointerUp(ev);
                 break;
         }
@@ -704,19 +701,19 @@ public class FlipView extends FrameLayout {
                     // Remember where the motion event started
                     mLastX = ev.getX();
                     mLastY = ev.getY();
-                    mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
+                    mActivePointerId = ev.getPointerId(0);
                     break;
                 case MotionEvent.ACTION_MOVE:
                     if (!mIsFlipping) {
-                        final int pointerIndex = MotionEventCompat.findPointerIndex(ev,
+                        final int pointerIndex = ev.findPointerIndex(
                                 mActivePointerId);
                         if (pointerIndex == -1) {
                             mActivePointerId = INVALID_POINTER;
                             break;
                         }
-                        final float x = MotionEventCompat.getX(ev, pointerIndex);
+                        final float x = ev.getX(pointerIndex);
                         final float xDiff = Math.abs(x - mLastX);
-                        final float y = MotionEventCompat.getY(ev, pointerIndex);
+                        final float y = ev.getY(pointerIndex);
                         final float yDiff = Math.abs(y - mLastY);
                         if ((mIsFlippingVertically && yDiff > mTouchSlop && yDiff > xDiff)
                                 || (!mIsFlippingVertically && xDiff > mTouchSlop && xDiff > yDiff)) {
@@ -727,15 +724,15 @@ public class FlipView extends FrameLayout {
                     }
                     if (mIsFlipping) {
                         // Scroll to follow the motion event
-                        final int activePointerIndex = MotionEventCompat
-                                .findPointerIndex(ev, mActivePointerId);
+                        final int activePointerIndex = ev
+                                .findPointerIndex(mActivePointerId);
                         if (activePointerIndex == -1) {
                             mActivePointerId = INVALID_POINTER;
                             break;
                         }
-                        final float x = MotionEventCompat.getX(ev, activePointerIndex);
+                        final float x = ev.getX(activePointerIndex);
                         final float deltaX = mLastX - x;
-                        final float y = MotionEventCompat.getY(ev, activePointerIndex);
+                        final float y = ev.getY(activePointerIndex);
                         final float deltaY = mLastY - y;
                         mLastX = x;
                         mLastY = y;
@@ -794,11 +791,11 @@ public class FlipView extends FrameLayout {
 
                         int velocity = 0;
                         if (isFlippingVertically()) {
-                            velocity = (int) VelocityTrackerCompat.getYVelocity(
-                                    velocityTracker, mActivePointerId);
+                            velocity = (int) velocityTracker.getYVelocity(
+                                    mActivePointerId);
                         } else {
-                            velocity = (int) VelocityTrackerCompat.getXVelocity(
-                                    velocityTracker, mActivePointerId);
+                            velocity = (int) velocityTracker.getXVelocity(
+                                    mActivePointerId);
                         }
                         smoothFlipTo(getNextPage(velocity));
 
@@ -808,21 +805,21 @@ public class FlipView extends FrameLayout {
                         mOverFlipper.overFlipEnded();
                     }
                     break;
-                case MotionEventCompat.ACTION_POINTER_DOWN: {
-                    final int index = MotionEventCompat.getActionIndex(ev);
-                    final float x = MotionEventCompat.getX(ev, index);
-                    final float y = MotionEventCompat.getY(ev, index);
+                case MotionEvent.ACTION_POINTER_DOWN: {
+                    final int index = ev.getActionIndex();
+                    final float x = ev.getX(index);
+                    final float y = ev.getY(index);
                     mLastX = x;
                     mLastY = y;
-                    mActivePointerId = MotionEventCompat.getPointerId(ev, index);
+                    mActivePointerId = ev.getPointerId(index);
                     break;
                 }
-                case MotionEventCompat.ACTION_POINTER_UP:
+                case MotionEvent.ACTION_POINTER_UP:
                     onSecondaryPointerUp(ev);
-                    final int index = MotionEventCompat.findPointerIndex(ev,
+                    final int index = ev.findPointerIndex(
                             mActivePointerId);
-                    final float x = MotionEventCompat.getX(ev, index);
-                    final float y = MotionEventCompat.getY(ev, index);
+                    final float x = ev.getX(index);
+                    final float y = ev.getY(index);
                     mLastX = x;
                     mLastY = y;
                     break;
@@ -1317,14 +1314,14 @@ public class FlipView extends FrameLayout {
     }
 
     private void onSecondaryPointerUp(MotionEvent ev) {
-        final int pointerIndex = MotionEventCompat.getActionIndex(ev);
-        final int pointerId = MotionEventCompat.getPointerId(ev, pointerIndex);
+        final int pointerIndex = ev.getActionIndex();
+        final int pointerId = ev.getPointerId(pointerIndex);
         if (pointerId == mActivePointerId) {
             // This was our active pointer going up. Choose a new
             // active pointer and adjust accordingly.
             final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
-            mLastX = MotionEventCompat.getX(ev, newPointerIndex);
-            mActivePointerId = MotionEventCompat.getPointerId(ev,
+            mLastX = ev.getX(newPointerIndex);
+            mActivePointerId = ev.getPointerId(
                     newPointerIndex);
             if (mVelocityTracker != null) {
                 mVelocityTracker.clear();
@@ -1333,12 +1330,10 @@ public class FlipView extends FrameLayout {
     }
 
     /**
-     *
-     * @param deltaFlipDistance
-     *            The distance to flip.
+     * @param deltaFlipDistance The distance to flip.
      * @return The duration for a flip, bigger deltaFlipDistance = longer
-     *         duration. The increase in duration gets smaller for bigger values
-     *         of deltaFlipDistance.
+     * duration. The increase in duration gets smaller for bigger values
+     * of deltaFlipDistance.
      */
     private int getFlipDuration(int deltaFlipDistance) {
         float distance = Math.abs(deltaFlipDistance);
@@ -1347,7 +1342,6 @@ public class FlipView extends FrameLayout {
     }
 
     /**
-     *
      * @param velocity
      * @return the page you should "land" on
      */
@@ -1376,7 +1370,6 @@ public class FlipView extends FrameLayout {
     }
 
     /**
-     *
      * @return true if ended a flip
      */
     private boolean endFlip() {
@@ -1393,7 +1386,6 @@ public class FlipView extends FrameLayout {
     }
 
     /**
-     *
      * @return true if ended a scroll
      */
     private boolean endScroll() {
@@ -1403,7 +1395,6 @@ public class FlipView extends FrameLayout {
     }
 
     /**
-     *
      * @return true if ended a peak
      */
     private boolean endPeak() {
@@ -1471,14 +1462,11 @@ public class FlipView extends FrameLayout {
         }
     }
 
-	/* ---------- API ---------- */
+    /* ---------- API ---------- */
 
     /**
-     *
-     * @param adapter
-     *            a regular ListAdapter, not all methods if the list adapter are
-     *            used by the flipview
-     *
+     * @param adapter a regular ListAdapter, not all methods if the list adapter are
+     *                used by the flipview
      */
     public void setAdapter(ListAdapter adapter) {
         if (mAdapter != null) {
@@ -1691,9 +1679,8 @@ public class FlipView extends FrameLayout {
     /**
      * Hint that there is a next page will do nothing if there is no next page
      *
-     * @param once
-     *            if true, only peak once. else peak until user interacts with
-     *            view
+     * @param once if true, only peak once. else peak until user interacts with
+     *             view
      */
     public void peakNext(boolean once) {
         if (mCurrentPageIndex < mPageCount - 1) {
@@ -1705,9 +1692,8 @@ public class FlipView extends FrameLayout {
      * Hint that there is a previous page will do nothing if there is no
      * previous page
      *
-     * @param once
-     *            if true, only peak once. else peak until user interacts with
-     *            view
+     * @param once if true, only peak once. else peak until user interacts with
+     *             view
      */
     public void peakPrevious(boolean once) {
         if (mCurrentPageIndex > 0) {
@@ -1716,9 +1702,8 @@ public class FlipView extends FrameLayout {
     }
 
     /**
-     *
      * @return true if the view is flipping vertically, can only be set via xml
-     *         attribute "orientation"
+     * attribute "orientation"
      */
     public boolean isFlippingVertically() {
         return mIsFlippingVertically;
@@ -1753,7 +1738,6 @@ public class FlipView extends FrameLayout {
     }
 
     /**
-     *
      * @return the overflip mode of this flipview. Default is GLOW
      */
     public OverFlipMode getOverFlipMode() {
@@ -1773,10 +1757,9 @@ public class FlipView extends FrameLayout {
     }
 
     /**
-     * @param emptyView
-     *            The view to show when either no adapter is set or the adapter
-     *            has no items. This should be a view already in the view
-     *            hierarchy which the FlipView will set the visibility of.
+     * @param emptyView The view to show when either no adapter is set or the adapter
+     *                  has no items. This should be a view already in the view
+     *                  hierarchy which the FlipView will set the visibility of.
      */
     public void setEmptyView(View emptyView) {
         mEmptyView = emptyView;
