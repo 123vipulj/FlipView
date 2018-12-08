@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "com.mike.pagertest"
@@ -21,13 +21,13 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:support-v4:27.1.0'
-    implementation 'com.android.support:support-v13:27.1.0'
-    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:support-v13:27.1.1'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation project(':FlipView')
     implementation "com.squareup.picasso:picasso:2.5.2"
-    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-    implementation 'com.github.bumptech.glide:glide:4.6.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.0'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation('org.simpleframework:simple-xml:2.7.+'){
         exclude module: 'stax'
