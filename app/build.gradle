@@ -8,8 +8,8 @@ android {
         applicationId "com.mike.pagertest"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 3
-        versionName "2.5"
+        versionCode 4
+        versionName "2.6"
     }
     buildTypes {
         release {
@@ -25,9 +25,9 @@ dependencies {
     implementation 'com.android.support:support-v13:27.1.1'
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation project(':FlipView')
-    implementation "com.squareup.picasso:picasso:2.5.2"
-    implementation 'com.squareup.okhttp3:okhttp:3.12.0'
-    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    implementation "com.squareup.picasso:picasso:2.71828"
+    implementation 'com.squareup.okhttp3:okhttp:3.13.1'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation('org.simpleframework:simple-xml:2.7.+'){
         exclude module: 'stax'
