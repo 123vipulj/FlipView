@@ -8,8 +8,8 @@ android {
         applicationId "com.mike.pagertest"
         minSdkVersion 15
         targetSdkVersion 29
-        versionCode 4
-        versionName "2.6"
+        versionCode 5
+        versionName "2.7"
     }
     buildTypes {
         release {
