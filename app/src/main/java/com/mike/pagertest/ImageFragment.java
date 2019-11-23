@@ -1,11 +1,12 @@
 package com.mike.pagertest;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.fragment.app.Fragment;
 
 import com.squareup.picasso.Picasso;
 
@@ -28,7 +29,7 @@ public class ImageFragment extends Fragment {
         processArgs();
         View view = inflater.inflate(R.layout.fr_myfragment, container, false);
         mImage = (ImageView) view.findViewById(R.id.image);
-        Picasso.with(getActivity())
+        Picasso.get()
                 .load(mResId)
                 .resize(600, 900)
                 .into(mImage);

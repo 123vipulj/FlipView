@@ -19,7 +19,7 @@ import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.Shader;
 import android.os.Build;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
